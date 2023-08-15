@@ -1,14 +1,17 @@
 import { StyleSheet, Text, View } from "react-native";
+import { Redirect } from 'expo-router';
 
 export default function Page() {
-  return (
-    <View style={styles.container}>
-      <View style={styles.main}>
-        <Text style={styles.title}>Hello World!</Text>
-        <Text style={styles.subtitle}>This is the first page of your app.</Text>
-      </View>
-    </View>
-  );
+  return  <Redirect href={"/ListContacts"} /> 
+  // (
+  //   <View style={styles.container}>
+  //     <View style={styles.main}>
+  //       <Text style={styles.title}>Hello World!</Text>
+  //       <Text style={styles.subtitle}>This is the first page of your app.</Text>
+  //       <Link  href={{pathname: "/ProfileContact", params: {name: 'shachar', lastName: 'kinreich'}}}>About</Link >
+  //     </View>
+  //   </View>
+  // );
 }
 
 const styles = StyleSheet.create({

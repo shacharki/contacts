@@ -7,16 +7,15 @@ import {
     Button,
     TextInput,
     ActivityIndicator,
-    FlatList,
-    Pressable
+   
 } from 'react-native';
 
 const ProfileContact = (() => {
-  const {name, lastName} = useLocalSearchParams()
+  const {name, lastName, phone} = useLocalSearchParams()
 
     return (
         <SafeAreaView >
-            <Text >Profile: {name} {lastName}</Text>
+            <Text >Profile: {name} {lastName} {phone}</Text>
             <Button onPress={()=>router.back()} title='go back'/>
         </SafeAreaView>
     );

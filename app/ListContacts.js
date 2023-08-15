@@ -1,7 +1,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Link,Redirect,useRootNavigationState  } from 'expo-router';
+import { Link, useRootNavigationState } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+
 import {
     Text,
     View,
@@ -17,7 +19,7 @@ const StyledHeader = "bg-white space-y-8 p-8 sm:px-8 sm:py-6 lg:p-2 xl:px-6 xl:p
 const StyledHeaderText = "font-semibold text-slate-2000 items-center justify-center";
 const StyledContact = "w-90 bg-red flex-1 items-center justify-center shadow rounded";
 const StyledContactNumber = 'text-500 flex-1 items-center justify-center text-md font-bold mt-2';
-const StyledPhoneNumber = '"text-blue-500"';
+const StyledLoading = '"flex-1 items-center justify-center"';
 const StyledSearch = "focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none w-full text-sm leading-6 text-slate-900 placeholder-slate-400 rounded-md py-2 pl-10 ring-1 ring-slate-100 shadow-sm"
 
 const ContactList = (() => {
@@ -27,7 +29,7 @@ const ContactList = (() => {
     const [allcontactsfilter, setcontactfilter] = useState([]); // filter state
     const [isLoading, setIsLoading] = useState(false);
     const [searchText, setSearchText] = useState("");
- 
+
     useEffect(() => {
         (async () => {
             setIsLoading(true)
@@ -57,18 +59,7 @@ const ContactList = (() => {
         })();
     }, []);
 
-    const getContactData = (data, property) => {
-        if (data) {
-            return data.map((data, index) => {
-                return (
-                    <View key={index}>
-                        <Text className={StyledPhoneNumber}> {index == 0 && data[property]}</Text>
-                    </View>
-                )
 
-            });
-        }
-    }
 
 
 
@@ -96,32 +87,39 @@ const ContactList = (() => {
         setIsLoading(false)
     };
 
-    const renderItem = ( item ) => (
-    //     <Link
-    //     href= "/ProfileContact"
-    //       // /* 1. Navigate to the details route with query params */
-    //     //   params: { item },
-    //   > 
-        <View style={{ minHeight: 70, padding: 5 }}>
-            <Text>
-                {item?.firstName == null
-                    ? "update name in your contacts"
-                    : item.firstName}
-                {item?.lastName == null ? null : item.lastName}
-            </Text>
-            <Text style={{ color: "red" }}>
-                {item?.phoneNumbers == undefined || null
-                    ? []
-                    : item?.phoneNumbers[0]?.number}
-            </Text>
-        </View>
-        // </Link>
+    const renderItem = (item) => (
+        <Link
+            href={{
+                pathname: "/ProfileContact",
+                params: {
+                    name: item?.firstName == null ? 'Missing name' : item.firstName,
+                    lastName: item?.lastName == null ? '' : item.lastName,
+                    phone: item?.phoneNumbers == undefined || null
+                        ? []
+                        : item?.phoneNumbers[0]?.number
+                }
+            }}
+        >
+            <View style={{ minHeight: 70, padding: 5 }}>
+                <Text>
+                    {item?.firstName == null
+                        ? "update name in your contacts"
+                        : item.firstName}
+                    {item?.lastName == null ? null : item.lastName}
+                </Text>
+                <Text style={{ color: "red" }}>
+                    {item?.phoneNumbers == undefined || null
+                        ? []
+                        : item?.phoneNumbers[0]?.number}
+                </Text>
+            </View>
+        </Link>
+
     );
 
     return (
         <SafeAreaView className={StyledHeader}>
-            <Text className={StyledHeaderText}>Contacts List:</Text>
-            <Link  href={{pathname: "/ProfileContact", params: {name: 'shachar', lastName: 'kinreich'}}}>About</Link >
+            <Link href={{ pathname: "/ProfileContact", params: { name: 'shachar', lastName: 'kinreich' } }}>About</Link >
             <TextInput
                 className={StyledSearch}
                 type={"text"}
@@ -129,10 +127,11 @@ const ContactList = (() => {
                 placeholder={'search contact...'}
                 value={searchText}
                 onChange={value => filtercontacts(value)}
-                disabled={isLoading} />
+                disabled={isLoading}
+                clearButtonMode='always' />
             {isLoading ? (
-                <View>
-                    <ActivityIndicator size={35} color="green" />
+                <View className={StyledLoading}>
+                    <ActivityIndicator size={"large"} color="#5500dc" />
                 </View>
             ) :
                 <FlatList
@@ -142,7 +141,6 @@ const ContactList = (() => {
                     ListEmptyComponent={() => (
                         <Text style={{ fontSize: 20, marginVertical: 40 }}>No contact </Text>)}
                 />}
-            {/* {getAllContacts()} */}
             <Text>{error}</Text>
             <StatusBar style="auto" />
         </SafeAreaView>

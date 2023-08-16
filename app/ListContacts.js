@@ -1,29 +1,27 @@
 
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Link, useRootNavigationState } from 'expo-router';
+import { Link } from 'expo-router';
 import { AntDesign } from '@expo/vector-icons';
 import {
     Text,
     View,
     SafeAreaView,
-    ScrollView,
     TextInput,
     ActivityIndicator,
     FlatList,
-    Pressable,
 } from 'react-native';
 import * as Contacts from 'expo-contacts';
+
 const StyledHeader = "bg-white space-y-8 p-8 sm:px-8 sm:py-6 lg:p-2 xl:px-6 xl:py-6 items-center justify-center"
 const StyledContacts = "font-semibold flex-1 minHeight-70 padding-5 text-slate-2000 items-center justify-center";
 const StyledContact = "w-90 bg-red  flex-1 items-center justify-center shadow rounded";
 const StyledContactNumber = 'text-500 flex-1 items-center justify-center text-md font-bold mt-2';
 const StyledLoading = '"flex-1 items-center justify-center"';
 const StyledSearch = "focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none w-full text-sm leading-6 text-slate-900 placeholder-slate-400 rounded-md py-2 pl-10 ring-1 ring-slate-100 shadow-sm"
-
+const StyledText = "text-slate-1800"
 const ContactList = (() => {
     const [error, setError] = useState(undefined);
-
     const [masterData, setcontact] = useState([]); //say set main state 
     const [filterData, setFilterData] = useState([]); // filter state
     const [isLoading, setIsLoading] = useState(false);
@@ -32,6 +30,7 @@ const ContactList = (() => {
     useEffect(() => {
         (async () => {
             setIsLoading(true)
+            setSearchText("")
             try {
                 const { status } = await Contacts.requestPermissionsAsync();
                 if (status === 'granted') {
@@ -58,7 +57,6 @@ const ContactList = (() => {
         })();
     }, []);
 
-
     const searchFilter = (text) => {
         if (text) {
             setIsLoading(true)
@@ -71,10 +69,8 @@ const ContactList = (() => {
                 if (item.lastName) {
                     last = item.lastName?.toString().toUpperCase()
                 }
-                const itemData = `${item.firstName || ''} ${item.lastName || ''}`
-                itemData.toUpperCase()
                 const textData = text?.toString().toUpperCase()
-                return (first || last).indexOf(textData) > -1;
+                return ((first).indexOf(textData) > -1 || (last).indexOf(textData) > -1);
             });
             setFilterData(newData)
             setSearchText(text)
@@ -86,9 +82,6 @@ const ContactList = (() => {
     }
 
 
-    const ItemSeparatorView = () => {
-        return (<View style={{ height: 0.5, width: "100%", backgroundColor: "black" }} />)
-    }
 
     const renderItem = (item) => (
         <Link
@@ -108,7 +101,7 @@ const ContactList = (() => {
                 <Text>
                     {item?.firstName == null
                         ? "update name in your contacts"
-                        : item.firstName}
+                        : item.firstName}{" "}
                     {item?.lastName == null ? null : item.lastName}
                 </Text>
                 <Text style={{ color: "red" }}>
@@ -123,7 +116,6 @@ const ContactList = (() => {
 
     return (
         <SafeAreaView className={StyledHeader}>
-            <Link href={{ pathname: "/ProfileContact", params: { name: 'shachar', lastName: 'kinreich' } }}>About</Link >
             <TextInput
                 className={StyledSearch}
                 autoCorrect={false}
@@ -131,7 +123,6 @@ const ContactList = (() => {
                 value={searchText}
                 onChangeText={text => searchFilter(text)}
                 disabled={isLoading}
-
                 clearButtonMode='always' />
             {isLoading ? (
                 <View className={StyledLoading}>
@@ -142,9 +133,8 @@ const ContactList = (() => {
                     data={filterData}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (renderItem(item))}
-                    ItemSeparatorComponent={ItemSeparatorView}
                     ListEmptyComponent={() => (
-                        <Text style={{ fontSize: 20, marginVertical: 40 }}>No contact </Text>)}
+                        <Text class={StyledText}>No contacts found</Text>)}
                 />}
             <Text>{error}</Text>
             <StatusBar style="auto" />

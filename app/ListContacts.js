@@ -13,15 +13,15 @@ import {
 } from 'react-native';
 import * as Contacts from 'expo-contacts';
 
-const StyledHeader = "bg-white space-y-8 p-8 sm:px-8 sm:py-6 lg:p-2 xl:px-6 xl:py-6 items-center justify-center"
+const StyledHeader = "bg-white p-8  sm:px-2 sm:py-6 lg:p-2 xl:px-2 xl:py-2 items-center justify-center"
 const StyledContacts = "flex-1 items-center justify-center bg-white";
 const StyledContact = "w-90 bg-red  flex-1 items-center justify-center shadow rounded";
 const StyledContactNumber = 'text-500 flex-1 items-center justify-center text-md font-bold mt-4';
 const StyledLoading = "flex-1 items-center justify-center space-y-5";
-const StyledSearch = "focus:ring-2 focus:outline-none font-bold w-full  leading-6 placeholder-slate-400 rounded-md py-3 pl-10 ring-1 ring-slate-100 shadow-sm"
+const StyledSearch = "flex-4 text-lg font-bold w-full  leading-16 placeholder-slate-1400 rounded-md py-3 pl-10 ring-1 ring-slate-100 shadow-sm"
 const StyledText = "text-slate-800"
 const styleUser = "space-y-14 "
-const styleUserViwe = "h-10 px-20 w-full font-semibold rounded-md border border-slate-200 text-slate-900 items-center justify-center"
+const styleUserViwe = "bg-indigo-50 shadow-md h-20 px-max  font-semibold rounded-md border border-slate-200 items-center justify-center"
 
 const ContactList = (() => {
     const [error, setError] = useState(undefined);
@@ -86,7 +86,7 @@ const ContactList = (() => {
 
     const renderItem = (item) => (
         <Link
-            className={"p-3 l bg-white shadow rounded-lg"}
+            className={"p-3 l bg-white shadow rounded-lg items-center justify-center"}
             href={{
                 pathname: "/ProfileContact",
                 params: {
@@ -98,9 +98,10 @@ const ContactList = (() => {
                 }
             }}
         >
-            <View style={{ minHeight: 70, padding: 5 }} className={styleUserViwe}>
                 <FontAwesome5 name="user-circle" size={24} color="black" />
-                <Text className={"text-xs border-b "}>
+
+            <View className={"flex-auto flex space-x-5"}>
+                <Text className={"text-s border-b "}>
                     {item?.firstName == null
                         ? "update name in your contacts"
                         : item.firstName}{" "}

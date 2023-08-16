@@ -8,7 +8,7 @@ export default function Layout() {
   headerStyle: {backgroundColor:'grey', fontWeight: 'bold'}}}>
 <Stack.Screen name='ListContacts' options={{title: 'Contacts List:',
 headerRight:()=>(<AntDesign name="team" size={24} color="white" />)}}/>
-<Stack.Screen name='ProfileContact' options={{title: 'Contacts Profile:',
+<Stack.Screen name='ProfileContact' options={{title: 'Contact Profile:',
 headerRight:()=>(<AntDesign name="user" size={24} color="white" /> )
 
 }}/>

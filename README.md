@@ -1,14 +1,13 @@
-# Expo Router Example
+build Contact search App.
 
-Use [`expo-router`](https://expo.github.io/router) to build native navigation using files in the `app/` directory.
+ Screen 1: List of all contacts from the phone, 
+ search field by name. Clicking on a contact will go to 
+ screen 2: with the details of the contact that was clicked 
+ and a button back to the main screen.
 
-## 🚀 How to use
-
-```sh
-npx create-expo-app -e with-router
-```
-
-## 📝 Notes
-
-- [Expo Router: Docs](https://expo.github.io/router)
-- [Expo Router: Repo](https://github.com/expo/router)
+Technical guidelines:
+  - React Native with Expo.
+  - Java Script.
+  - Expo Router.
+  - Expo Contacts.
+  - tailwindss.

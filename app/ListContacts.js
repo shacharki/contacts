@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Link } from 'expo-router';
-import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import {
     Text,
     View,
@@ -14,12 +14,15 @@ import {
 import * as Contacts from 'expo-contacts';
 
 const StyledHeader = "bg-white space-y-8 p-8 sm:px-8 sm:py-6 lg:p-2 xl:px-6 xl:py-6 items-center justify-center"
-const StyledContacts = "font-semibold flex-1 minHeight-70 padding-5 text-slate-2000 items-center justify-center";
+const StyledContacts = "flex-1 items-center justify-center bg-white";
 const StyledContact = "w-90 bg-red  flex-1 items-center justify-center shadow rounded";
-const StyledContactNumber = 'text-500 flex-1 items-center justify-center text-md font-bold mt-2';
-const StyledLoading = '"flex-1 items-center justify-center"';
-const StyledSearch = "focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none w-full text-sm leading-6 text-slate-900 placeholder-slate-400 rounded-md py-2 pl-10 ring-1 ring-slate-100 shadow-sm"
-const StyledText = "text-slate-1800"
+const StyledContactNumber = 'text-500 flex-1 items-center justify-center text-md font-bold mt-4';
+const StyledLoading = "flex-1 items-center justify-center space-y-5";
+const StyledSearch = "focus:ring-2 focus:outline-none font-bold w-full  leading-6 placeholder-slate-400 rounded-md py-3 pl-10 ring-1 ring-slate-100 shadow-sm"
+const StyledText = "text-slate-800"
+const styleUser = "space-y-14 "
+const styleUserViwe = "h-10 px-20 w-full font-semibold rounded-md border border-slate-200 text-slate-900 items-center justify-center"
+
 const ContactList = (() => {
     const [error, setError] = useState(undefined);
     const [masterData, setcontact] = useState([]); //say set main state 
@@ -81,10 +84,9 @@ const ContactList = (() => {
         setIsLoading(false)
     }
 
-
-
     const renderItem = (item) => (
         <Link
+            className={"p-3 l bg-white shadow rounded-lg"}
             href={{
                 pathname: "/ProfileContact",
                 params: {
@@ -96,22 +98,21 @@ const ContactList = (() => {
                 }
             }}
         >
-            <View style={{ minHeight: 70, padding: 5 }} className={StyledContacts}>
-                <AntDesign name="user" size={24} color="black" />
-                <Text>
+            <View style={{ minHeight: 70, padding: 5 }} className={styleUserViwe}>
+                <FontAwesome5 name="user-circle" size={24} color="black" />
+                <Text className={"text-xs border-b "}>
                     {item?.firstName == null
                         ? "update name in your contacts"
                         : item.firstName}{" "}
                     {item?.lastName == null ? null : item.lastName}
                 </Text>
-                <Text style={{ color: "red" }}>
+                <Text className={"color-green"} >
                     {item?.phoneNumbers == undefined || null
                         ? []
                         : item?.phoneNumbers[0]?.number}
                 </Text>
             </View>
         </Link>
-
     );
 
     return (
@@ -130,6 +131,7 @@ const ContactList = (() => {
                 </View>
             ) :
                 <FlatList
+                    className={"w-full "}
                     data={filterData}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (renderItem(item))}
@@ -140,8 +142,6 @@ const ContactList = (() => {
             <StatusBar style="auto" />
         </SafeAreaView>
     );
-
-
 })
 
 export default ContactList;
